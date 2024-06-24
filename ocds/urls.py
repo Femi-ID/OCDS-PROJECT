@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 # from accounts.views import CustomToken
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,3 +28,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
 ]
+
+# RAILWAY CONFIG
+# media configuration for file uploads and static files
+urlpatterns += static(settings.MEDIA_URL, document=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document=settings.STATIC_ROOT)

@@ -1,0 +1,8 @@
+.env
+__pycache__
+.venv
+my_notes.txt
+db.sqlite3
+vercel.json
+build.sh
+build_files.sh
