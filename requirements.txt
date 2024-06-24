@@ -11,9 +11,9 @@ channels==4.1.0
 charset-normalizer==3.0.1
 defusedxml==0.7.1
 distlib==0.3.4
-dj-database-url==1.0.0
+dj-database-url
 Django==5.0.6
-django-bootstrap-v5==1.0.11
+django-bootstrap-v5
 django-bootstrap4==22.2
 django-cors-headers==4.3.1
 django-extensions==3.2.3
