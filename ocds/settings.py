@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'taggit',
     'djoser',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
     'corsheaders',
 
     # applications
@@ -166,9 +166,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True # consider this during production
+# CORS_ALLOW_ALL_ORIGINS = True # consider this during production
+CORS_ALLOWED_ORIGINS = [
+    '127.0.0.1:8000', 'https://ocds-project.onrender.com', 
+]
 
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEYS": "errors",
@@ -191,11 +194,11 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
 
     # sign up user
-    'PASSWORD_RESET_CONFIRM_URL': True,
     'SEND_ACTIVATION_EMAIL': True, # instance: account creation, email update
     'SEND_CONFIRMATION_EMAIL': True, # sent after account activation
     'USER_CREATE_PASSWORD_RETYPE': True, # ensure a confirm password field on user creation
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    # When clicked in the email it sends a post request to the activation endpoint with uid and token arguments
     'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}', # link to be sent to the email
     'PASSWORD_RESET_CONFIRM_URL': 'auth/reset-password/?uid={uid}&token={token}',
 

@@ -31,18 +31,18 @@ class UserCreateSerializer(BaseUserCreateSerializer):
     
 
 # Serializer to add user-data to the /jwt/create route
-class CustomTokenSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        obj = self.user
+# class CustomTokenSerializer(TokenObtainPairSerializer):
+#     def validate(self, attrs):
+#         data = super().validate(attrs)
+#         obj = self.user
 
-        data.update({
-            'id': obj.id, 
-            'username': obj.username,
-            'email': obj.email,
-            'user_type' : obj.user_type
-        })
+#         data.update({
+#             'id': obj.id, 
+#             'username': obj.username,
+#             'email': obj.email,
+#             'user_type' : obj.user_type
+#         })
 
-        return data
+#         return data
     
     
