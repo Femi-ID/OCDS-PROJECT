@@ -29,9 +29,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
+# DEBUG = True
 
-# ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(" ")
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+# ALLLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -118,7 +120,7 @@ DATABASES = {
 # postgres://USER:PASSWORD@INTERNAL_HOST:PORT/DATABASE
 # database_url = config("DATABASE_URL")
 database_url = os.environ.get("DATABASE_URL")
-DATABASES['default'] = dj_database_url.parse(database_url)
+DATABASES['default'] = dj_database_url.parse('postgresql://ocds_team:sitV5twxbGwqINR3N1H14gd1rKF11WIz@dpg-cpssdq6ehbks73eq0430-a.oregon-postgres.render.com/ocds_db')
 
 
 # Password validation
@@ -166,12 +168,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True # consider this during production
-CORS_ALLOWED_ORIGINS = [
-    '127.0.0.1:8000', 'https://ocds-project.onrender.com', 
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://127.0.0.1:8000', 'https://ocds-project.onrender.com', 
+# ]
 
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEYS": "errors",

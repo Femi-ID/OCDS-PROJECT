@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 # potential tables tags and vote
 class Question(models.Model):
     owner = models.ForeignKey(User, related_name='questions', on_delete=models.CASCADE)
-    body = models.CharField(max_length=250, null=True)
+    body = models.TextField(max_length=250, null=False)
     # slug = models.SlugField(max_length=200, unique=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -19,14 +19,14 @@ class Question(models.Model):
 
 class Reply(models.Model):
     question = models.ForeignKey(Question, related_name='replies', on_delete=models.CASCADE)
-    body = models.CharField(max_length=250)
+    body = models.TextField(max_length=400, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
 
 class Vote(models.Model):
     question = models.ForeignKey(Question, related_name='votes', on_delete=models.CASCADE)
-    reply = models.ForeignKey(Reply, related_name='replies', on_delete=models.CASCADE)
-    voted_by = models.ForeignKey(User, related_name='vote', on_delete=models.DO_NOTHING)
+    reply = models.ForeignKey(Reply, related_name='votes', on_delete=models.CASCADE)
+    voted_by = models.ForeignKey(User, related_name='votes', on_delete=models.DO_NOTHING)
 
 
 # class Tag(models.Model):
