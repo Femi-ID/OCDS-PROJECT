@@ -225,7 +225,7 @@ DJOSER = {
 
 # The name that will be used in the activation email
 SITE_NAME = 'OCDS PROJECT'
-DOMAIN = 'localhost:8000'
+DOMAIN = 'https://ocds-project.onrender.com'
 # The ACTIVATION_URL will be appended to the domain and sent to the user's email
 # The link routes to the frontend (react view) and sends the request to the server
 # Same applies for 'PASSWORD_RESET_CONFIRM_URL'
