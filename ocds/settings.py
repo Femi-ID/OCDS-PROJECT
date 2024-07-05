@@ -199,7 +199,7 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True, # ensure a confirm password field on user creation
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     # When clicked in the email it sends a post request to the activation endpoint with uid and token arguments
-    'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}', # link to be sent to the email
+    'ACTIVATION_URL': 'auth/users/activate/{uid}/{token}', # link to be sent to the email
     'PASSWORD_RESET_CONFIRM_URL': 'auth/reset-password/?uid={uid}&token={token}',
 
     # new password
