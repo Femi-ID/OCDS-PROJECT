@@ -166,12 +166,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True # consider this during production
-CORS_ALLOWED_ORIGINS = [
-    '127.0.0.1:8000', 'https://ocds-project.onrender.com', 
-]
+# CORS_ALLOWED_ORIGINS = [
+#     '127.0.0.1:8000', 'https://ocds-project.onrender.com', 
+# ]
 
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEYS": "errors",
