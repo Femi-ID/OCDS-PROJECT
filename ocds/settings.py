@@ -171,9 +171,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True # consider this during production
-# CORS_ALLOWED_ORIGINS = [
-#     'http://127.0.0.1:8000', 'https://ocds-project.onrender.com', 
-# ]
+CORS_ALLOWED_ORIGINS = [
+    '127.0.0.1:8000', 'https://ocds-project.onrender.com', 
+]
 
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEYS": "errors",
@@ -201,7 +201,7 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True, # ensure a confirm password field on user creation
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     # When clicked in the email it sends a post request to the activation endpoint with uid and token arguments
-    'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}', # link to be sent to the email
+    'ACTIVATION_URL': 'auth/users/activate/{uid}/{token}', # link to be sent to the email
     'PASSWORD_RESET_CONFIRM_URL': 'auth/reset-password/?uid={uid}&token={token}',
 
     # new password
@@ -227,7 +227,7 @@ DJOSER = {
 
 # The name that will be used in the activation email
 SITE_NAME = 'OCDS PROJECT'
-DOMAIN = 'localhost:8000'
+DOMAIN = 'ocds-project.onrender.com'
 # The ACTIVATION_URL will be appended to the domain and sent to the user's email
 # The link routes to the frontend (react view) and sends the request to the server
 # Same applies for 'PASSWORD_RESET_CONFIRM_URL'
