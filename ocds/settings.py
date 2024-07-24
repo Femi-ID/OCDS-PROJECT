@@ -120,7 +120,7 @@ DATABASES = {
 # postgres://USER:PASSWORD@INTERNAL_HOST:PORT/DATABASE
 # database_url = config("DATABASE_URL")
 database_url = os.environ.get("DATABASE_URL")
-DATABASES['default'] = dj_database_url.parse('postgresql://ocds_team:sitV5twxbGwqINR3N1H14gd1rKF11WIz@dpg-cpssdq6ehbks73eq0430-a.oregon-postgres.render.com/ocds_db')
+DATABASES['default'] = dj_database_url.parse('postgresql://ocds_team:lnr7eWhNLar0bQllFsUtsTZtPrIysn0q@dpg-cqgeak56l47c73bu0hd0-a/ocds_db_bcfs')
 
 
 # Password validation
