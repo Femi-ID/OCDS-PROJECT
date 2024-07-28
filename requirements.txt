@@ -1,4 +1,4 @@
-﻿asgiref
+asgiref
 certifi
 cffi
 charset-normalizer
@@ -6,6 +6,7 @@ cryptography
 defusedxml
 dj_database_url
 Django
+django-autoslug
 django-cors-headers
 django-taggit
 django-templated-mail

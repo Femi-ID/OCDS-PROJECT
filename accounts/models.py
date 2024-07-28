@@ -45,8 +45,9 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser, PermissionsMixin):
     class UserType(models.TextChoices):
-        STUDENT = "ST", _("Student")
-        MENTOR = "MT", _("Mentor")
+        STUDENT = "student"
+        MENTOR = "mentor"
+        ADMIN = "admin"
 
     # std_user = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
     username = models.CharField(max_length=250, null=False, unique=True)
@@ -54,7 +55,7 @@ class User(AbstractUser, PermissionsMixin):
     phone_number = models.CharField(max_length=14, null=True)
     bio = models.TextField(blank=True, null=True)
     date_of_birth = models.DateField()
-    user_type = models.CharField(max_length=2, choices=UserType, default=UserType.STUDENT)
+    user_type = models.CharField(max_length=10, choices=UserType, default=UserType.STUDENT)
     date_created = models.DateTimeField(auto_now_add=True)
 
     # create UserManager object to use this custom model.
