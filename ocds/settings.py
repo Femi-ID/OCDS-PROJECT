@@ -24,16 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = config('SECRET_KEY')
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
-# DEBUG = True
+# DEBUG = os.environ.get('DEBUG')
+DEBUG = True
 
 # ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(" ")
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
-# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,12 +56,14 @@ INSTALLED_APPS = [
     # applications
     'accounts',
     'questions',
+    'community',
+    # 'rest_framework.authtoken',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
 
 # Django Taggit settings
-# TAGGIT_CASE_INSENSITIVE = True
+TAGGIT_CASE_INSENSITIVE = True
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -120,8 +122,8 @@ DATABASES = {
 # postgres://USER:PASSWORD@INTERNAL_HOST:PORT/DATABASE
 # database_url = config("DATABASE_URL")
 database_url = os.environ.get("DATABASE_URL")
-DATABASES['default'] = dj_database_url.parse('postgresql://ocds_team:lnr7eWhNLar0bQllFsUtsTZtPrIysn0q@dpg-cqgeak56l47c73bu0hd0-a/ocds_db_bcfs')
 
+DATABASES['default'] = dj_database_url.parse('postgresql://ocds_team:lnr7eWhNLar0bQllFsUtsTZtPrIysn0q@dpg-cqgeak56l47c73bu0hd0-a.oregon-postgres.render.com/ocds_db_bcfs')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -170,9 +172,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_ALL_ORIGINS = True # consider this during production
+CORS_ALLOW_ALL_ORIGINS = True # consider this during production
 CORS_ALLOWED_ORIGINS = [
-    '127.0.0.1:8000', 'https://ocds-project.onrender.com', 
+    'http://127.0.0.1:8000', 'https://ocds-project.onrender.com', 
 ]
 
 REST_FRAMEWORK = {
@@ -235,23 +237,23 @@ DOMAIN = 'ocds-project.onrender.com'
 
 
 # Email Config
-# EMAIL_BACKEND = config('EMAIL_BACKEND')
-# EMAIL_HOST = config('EMAIL_HOST')
-# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-# EMAIL_PORT = config('EMAIL_PORT')
-# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-# DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
-# MAILER_EMAIL_BACKEND = config('MAILER_EMAIL_BACKEND')
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+MAILER_EMAIL_BACKEND = config('MAILER_EMAIL_BACKEND')
 
 
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
-DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+# EMAIL_HOST = os.environ.get('EMAIL_HOST')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_PORT = os.environ.get('EMAIL_PORT')
+# EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+# DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
 
 if not DEBUG:
