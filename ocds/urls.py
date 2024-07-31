@@ -27,7 +27,7 @@ urlpatterns = [
     # path('auth/jwt/create/', CustomToken.as_view()),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    path('questions/', include('questions.urls')),
+    path('community-questions/', include('questions.urls')),
     path('', include('community.urls')),
 ]
 

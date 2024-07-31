@@ -8,6 +8,8 @@ from django.urls import reverse
 from taggit.managers import TaggableManager
 from django.utils.translation import gettext_lazy as _
 from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
+from .enums import VOTE_CHOICES
+from django.conf import settings
 
 
 class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
@@ -21,10 +23,14 @@ class Question(models.Model):
     owner = models.ForeignKey(User, related_name='questions', on_delete=models.CASCADE)
     title = models.CharField(max_length=250, blank=False)
     body = models.TextField(max_length=500, blank=True)
-    slug = models.SlugField(max_length=200, unique=True, null=True)
+    slug = models.SlugField(max_length=250, unique=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     community = models.ForeignKey(Community, related_name='questions', on_delete=models.CASCADE, null=True, blank=False)
+    vote_type = models.CharField(choices=VOTE_CHOICES, null=True, blank=True)
+    voted_by = models.ManyToManyField(User)
+    # voted_by = models.ForeignKey(User, related_name='question_votes', on_delete=models.CASCADE, blank=True, null=True)
+    
 
     tags = TaggableManager(through=UUIDTaggedItem)
 
@@ -32,11 +38,12 @@ class Question(models.Model):
         return f"{self.owner}: {self.title[:20]}...."
 
     def total_votes(self):
-        up_votes = self.objects.filter('votes__vote_type'=='UPVOTE').annotate(
+        up_votes = self.voted_by.filter(vote_type='UPVOTE').annotate(
             up_votes_sum=Count('vote_type'))
-        down_votes = self.objects.filter('votes__vote_type'=='DOWNVOTE').annotate(
+        down_votes = self.voted_by.filter(vote_type='DOWNVOTE').annotate(
             down_votes_sum=Count('vote_type'))
         return (up_votes, down_votes)
+
     
     def get_absolute_url(self):
         return reverse("question_list", kwargs={'slug': self.slug})
@@ -47,17 +54,19 @@ class Reply(models.Model):
     body = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    vote_type = models.CharField(choices=VOTE_CHOICES, null=True, blank=True)
+    voted_by = models.ForeignKey(User, related_name='reply_votes', on_delete=models.CASCADE, blank=True, null=True)
 
 
-class Vote(models.Model):
-    VOTE_CHOICES = (
-        ('UPVOTE', 'upvote'),
-        ('DOWNVOTE', 'downvote'),
-    )
-    question = models.ForeignKey(Question, related_name='votes', on_delete=models.CASCADE)
-    reply = models.ForeignKey(Reply, related_name='votes', on_delete=models.CASCADE)
-    voted_by = models.ForeignKey(User, related_name='votes', on_delete=models.DO_NOTHING)
-    vote_type = models.CharField(choices=VOTE_CHOICES, null=True)
+# class Vote(models.Model):
+#     VOTE_CHOICES = (
+#         ('UPVOTE', 'upvote'),
+#         ('DOWNVOTE', 'downvote'),
+#     )
+#     question = models.ForeignKey(Question, related_name='votes', on_delete=models.CASCADE, null=True, blank=True)
+#     reply = models.ForeignKey(Reply, related_name='votes', on_delete=models.CASCADE, null=True, blank=True)
+#     voted_by = models.ForeignKey(User, related_name='votes', on_delete=models.DO_NOTHING)
+#     vote_type = models.CharField(choices=VOTE_CHOICES, null=True)
 
     # def total_votes(self):
     #         return self.vote_type.aggregate(

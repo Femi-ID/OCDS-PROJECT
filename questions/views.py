@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .serializers import QuestionSerializer, ReplySerializer, VoteSerializer
+from .serializers import QuestionSerializer, ReplySerializer
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Question, Reply, Vote
+from .models import Question, Reply
 from community.models import Community 
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -25,44 +25,43 @@ def is_uuid_valid(uuid_to_test, version=4):
                      'uuid_obj': uuid_obj})
 
 
-class QuestionListByCommunity(APIView):
-    """List all questions for the General page."""
+class ListQuestionByCommunity(APIView):
+    """List all questions for a community."""
     # parser_classes = [IsAuthenticated]
     # permission_classes = [IsAuthenticated]
         
-    def get(self, request, communityId):
+    def get(self, request, community_id):
         # is_uuid_valid(communityId)
         # confirm if I should create a query to check if the user is a member of the community
         try:
-            community = get_object_or_404(Community, id=communityId)
-            questions = Question.objects.filter(community=community)
+            community = get_object_or_404(Community, id=community_id)
+            questions = Question.objects.filter(community=community).order_by('-updated_at')
+
             if not questions:
                 return Response({"status": 400, 
-                                 "success": True,
+                                    "success": True,
                                 "message": "The community exists but currently has no questions."})
             serializer = QuestionSerializer(questions, many=True)
-            # for question in serializer.data['votes']:
-            #     up_vote = question.total_votes.up_votes
-            #     down_vote = question.total_votes.down_votes
-            #     return {"up_vote":up_vote,"down_vote":down_vote}
-            # quest_up_vote = 
 
-            up_votes = questions.filter('votes__vote_type'=='UPVOTE').annotate(
-                up_votes_sum=Count('vote_type'))
-            down_votes = questions.filter('votes__vote_type'=='DOWNVOTE').annotate(
-                down_votes_sum=Count('vote_type'))
+            # for question in questions:
+            #     replies = Reply.objects.filter(question=question.id).count()
+            #     return replies
 
-        
+            # up_votes = questions.filter('votes__vote_type'=='UPVOTE').annotate(
+            #     up_votes_sum=Count('vote_type'))
+            # down_votes = questions.filter('votes__vote_type'=='DOWNVOTE').annotate(
+            #     down_votes_sum=Count('vote_type'))
+
             return Response({'status': 200,
-                             'success': True,
-                             'message': f'Community {community.name} and its questions',
-                             'data': serializer.data},
-                             status=status.HTTP_200_OK)
+                                'success': True,
+                                'message': f'Community {community.name} and its questions',
+                                'data': serializer.data},
+                                status=status.HTTP_200_OK)
         except Exception as e:
             return Response({
                 "status": 500,
                 "success": False,
-                "message": f'Server Malfunction: {e}'
+                "message": f'Server Malfunctionzz: {e}'
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     def post(self, request, communityId):
@@ -96,7 +95,3 @@ class QuestionListByCommunity(APIView):
                 "success": False,
                 "message": f'Server Malfunction: {e}'
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-# class QuestionModelViewSet(ModelViewSet):
-#     queryset = Question.objects.all()
-#     serializer_class = QuestionSerializer

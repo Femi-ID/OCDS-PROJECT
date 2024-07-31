@@ -4,7 +4,6 @@ from . import views
 # router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('<str:communityId>/', views.QuestionListByCommunity.as_view(), name='question_list'),
+    path('<str:community_id>/', views.ListQuestionByCommunity.as_view(), name='question_list'),
 ] 
-# + router.urls
  
