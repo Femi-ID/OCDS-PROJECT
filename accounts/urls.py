@@ -1,5 +1,6 @@
 from django.urls import path
+from .views import CreateAdminUser
 
 urlpatterns = [
-    # path('sign-up/', UserCreate.as_view(), name='sign-up')
+    path('admin-signup/', CreateAdminUser.as_view(), name='sign-up'),
 ]

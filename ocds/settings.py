@@ -32,8 +32,8 @@ DEBUG = os.environ.get('DEBUG')
 # DEBUG = True
 
 # ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(" ")
-# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'djoser',
     # 'rest_framework.authtoken',
     'corsheaders',
+    # 'debug_toolbar',
 
     # applications
     'accounts',
@@ -75,8 +76,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware' # django debug toolbar
 ]
 
+# django debug toolbar settings 
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
 
 ROOT_URLCONF = 'ocds.urls'
 
@@ -254,7 +260,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
-# MAILER_EMAIL_BACKEND = os.environ.get('MAILER_EMAIL_BACKEND')
+MAILER_EMAIL_BACKEND = os.environ.get('MAILER_EMAIL_BACKEND')
 
 
 if not DEBUG:

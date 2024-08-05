@@ -5,5 +5,6 @@ from . import views
 
 urlpatterns = [
     path('<str:community_id>/', views.ListQuestionByCommunity.as_view(), name='question_list'),
+    path('details/<str:question_id>/', views.QuestionDetails.as_view(), name='question_detail'),
 ] 
  

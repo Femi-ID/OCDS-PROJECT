@@ -19,6 +19,8 @@ from django.urls import path, include
 # from accounts.views import CustomToken
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf import settings
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +31,12 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
     path('community-questions/', include('questions.urls')),
     path('', include('community.urls')),
-]
+    path('custom-user/', include('accounts.urls'))
+] 
+# + debug_toolbar_urls()
+
+# if settings.DEBUG:
+#     urlpatterns += path('__debug__/', include(debug_toolbar_urls))
 
 # RAILWAY CONFIG
 # media configuration for file uploads and static files

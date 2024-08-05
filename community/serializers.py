@@ -7,7 +7,7 @@ from django.db.models import Count, Sum
 class InformationSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Information
-        fields = ['title', 'content', 'owner']
+        fields = ['title', 'content'] # look to add 'owner'
 
 
 class CommunitySerializer(serializers.ModelSerializer):
