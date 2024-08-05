@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, AbstractUser, PermissionsMixin
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from .enums import UserType
 
 # Create your models here.
 
@@ -44,10 +45,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser, PermissionsMixin):
-    class UserType(models.TextChoices):
-        STUDENT = "student"
-        MENTOR = "mentor"
-        ADMIN = "admin"
+    
 
     # std_user = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
     username = models.CharField(max_length=250, null=False, unique=True)

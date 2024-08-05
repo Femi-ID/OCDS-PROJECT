@@ -1,25 +1,26 @@
-# from django.shortcuts import render
-# from rest_framework.request import Request
-# from rest_framework.views import APIView
-# from rest_framework import status
-# from rest_framework.response import Response
-# from .serializers import CustomTokenSerializer
-# from .models import User
-# from rest_framework import generics
-# from rest_framework_simplejwt.views import TokenObtainPairView
+from .models import User
+from .serializers import CreateAdminUserSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 
-# # Unimportant but anyways: View to add user-data to the /jwt/create route
-# class CustomToken(TokenObtainPairView):
-#     serializer_class = CustomTokenSerializer
+class CreateAdminUser(APIView):
+    # def get(self):
 
-#     def post(self, request: Request, *args, **kwargs) -> Response:
-#         try:
-#             user = User.objects.get(email=request.data.get('username'))
-#             # .exists()
-#         except User.DoesNotExist:
-#             return Response({'error': 'Invalid email or password inputted.'}, 
-#                                 status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        user = User.objects.filter(email=request.data['email'])
+        # user_email = []
+        # for user in users:
+        #     user_email.append([user.email])
 
-#         return super().post(request, *args, **kwargs)
+        if user:
+            return Response({'error': 'User email already exists.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
+        serializer = CreateAdminUserSerializer(data=request.data)
+        if serializer.is_valid():
+            # user.user_type 
+            serializer.save(user_type='admin')
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

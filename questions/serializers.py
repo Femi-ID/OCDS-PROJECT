@@ -1,31 +1,17 @@
 from rest_framework import serializers
 from .models import Question, Reply
 from taggit.serializers import (TagListSerializerField, TaggitSerializer)
-from django.db.models import Count
+from django.db.models import Count, Sum
+from .enums import VoteChoices, VOTE_CHOICES
 
 class VoteCountField(serializers.Field):
     def to_representation(self, value):
         return value
-    
-# class QuestionSerializer(serializers.ModelSerializer, TaggitSerializer):
-#     tags = TagListSerializerField
-#     owner = serializers.ReadOnlyField(source='owner.username')
-#     # up_votes = serializers.StringRelatedField(many=True, read_only=True)
-#     # up_votes = serializers.SerializerMethodField(source='total_votes.up_votes')
-#     # down_votes = serializers.SerializerMethodField(source='total_votes.down_votes')
-#     up_votes = VoteCountField(source='total_votes.up_votes')
-#     down_votes = VoteCountField(source='total_votes.down_votes')
-#     class Meta: 
-#         model = Question
-#         fields = ['id', 'owner', 'title', 'body', 'created_at', 'community', 'owner', 'votes', 'up_votes', 'down_votes']
 
 #     def get_up_votes(self, object):
 #         up_votes = self.object.filter('votes__vote_type'=='UPVOTE').annotate(
 #             up_votes_sum=Count('vote_type'))
 #         return up_votes
-
-#     def get_down_votes(self, object):
-#         return object.total_votes('down_votes')
 
 
 class QuestionSerializer(serializers.ModelSerializer, TaggitSerializer):
@@ -43,37 +29,60 @@ class QuestionSerializer(serializers.ModelSerializer, TaggitSerializer):
         
     def get_questions_replies(self, object):
             return object.replies.count()
-
-    # def get_up_votes(self, obj):
-    #     up_votes, down_votes = obj.total_votes()
-    #     return up_votes
+            # queryset = Question.objects.filter(replies__question__id=object.id)
+            # return QuestionSerializer(queryset, many=True).data
 
     # def get_down_votes(self, obj):
-    #     up_votes, down_votes = obj.total_votes()
-    #     return down_votes 
+    #     # up_votes, down_votes = obj.total_votes()
+    #     down_vote = obj.vote_type='DOWNVOTE'.count()
+    #     return down_vote 
 
     # def get_up_votes(self, obj):
     #     return obj.vote_type.filter(vote_type='UPVOTE').annotate(
     #         up_votes_sum=Count('vote_type'))
+    # def get_up_votes(self, obj):
+    #     return Question.objects.filter(vote_type='UPVOTE').annotate(down_vote_sum=Count('vote_type'))
+    #     # return QuestionSerializer(query_set, many=True)
 
     # def get_down_votes(self, obj):
-    #     return obj.vote_type.filter(vote_type='DOWNVOTE').count()
+    #     return Question.objects.filter(vote_type='DOWNVOTE').annotate(down_vote_sum=Count('vote_type'))
+        # return QuestionSerializer(query_set, many=True)
+        # return obj.vote_type.filter(vote_type='DOWNVOTE').count()
+    
+    # def getType1Items(self, ownerObj):
+    #     queryset = models.Item.objects.filter(owner__id=ownerObj.id).filter(itemType="type1")
+    #     return ItemSerializer(queryset, many=True).data
     
     
-    
-
-
 class ReplySerializer(serializers.ModelSerializer):
-    replies = serializers.SerializerMethodField()
     class Meta:
         model = Reply
-        fields = ['question', 'body', 'date_created', 'length', 'questions_replies']
+        fields = ['question_id', 'body', 'created_at']
+
+    # upvote_count = serializers.SerializerMethodField()
+
+    # def get_upvote_count(self, obj):
+    #     return Reply.objects.filter(vote_type="UPVOTE").count()
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        total_upvote = Reply.objects.filter(vote_type="UPVOTE").count()
+        upvote = []
+        upvote.append(total_upvote)
+        values = len(upvote)
+        print(values)
+        print(upvote)
+        representation['total_upvote'] = values
+        return representation
 
 
-        def get_replies(self, obj):
-            length = self.reply.count()
-            return length
+        # def get_replies(self, obj):
+        #     # length = self.reply.count()
+        #     # return length
 
+        #     queryset = Reply.objects.filter(question__id=obj.question)
+            
+        #     return QuestionSerializer(queryset, many=True).data
 
 # class VoteSerializer(serializers.ModelSerializer):
 #     class Meta:

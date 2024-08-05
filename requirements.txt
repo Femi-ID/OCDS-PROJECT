@@ -8,6 +8,7 @@ dj_database_url
 Django
 django-autoslug
 django-cors-headers
+django-debug-toolbar
 django-taggit
 django-templated-mail
 djangorestframework

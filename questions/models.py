@@ -44,7 +44,7 @@ class Question(models.Model):
             down_votes_sum=Count('vote_type'))
         return (up_votes, down_votes)
 
-    
+        
     def get_absolute_url(self):
         return reverse("question_list", kwargs={'slug': self.slug})
 

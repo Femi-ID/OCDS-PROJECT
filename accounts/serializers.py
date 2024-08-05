@@ -7,6 +7,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer, UserSerializer as BaseUserSerializer
 
+from rest_framework import serializers
+from .models import User
+
 custom_user = get_user_model()
 
 
@@ -29,6 +32,11 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             'date_of_birth', 'user_type',
         ]
     
+
+class CreateAdminUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= User
+        fields = ['username', 'email', 'password', 'date_of_birth', 'phone_number']
 
 # Serializer to add user-data to the /jwt/create route
 # class CustomTokenSerializer(TokenObtainPairSerializer):
