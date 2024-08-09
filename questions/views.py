@@ -26,7 +26,7 @@ def is_uuid_valid(uuid_to_test, version=4):
     print({'message': 'Valid community id', 
                      'uuid_obj': uuid_obj})
 
-
+# REMOVE ALL PRINT FUNCTIONS AND PUSH !!!
 class ListQuestionByCommunity(APIView):
     """List all questions for a community."""
     # parser_classes = [IsAuthenticated]
@@ -133,4 +133,9 @@ class QuestionDetails(APIView):
                 "message": f'Server Error: {e}'
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            
+
+# class SendMessages(APIView):
+#     """Only admin users can send messages."""
+#     def post(self, request):
+#         if request.user.user_type == "admin":
+

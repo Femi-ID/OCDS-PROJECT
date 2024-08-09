@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'accounts',
     'questions',
     'community',
-    # 'rest_framework.authtoken',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
