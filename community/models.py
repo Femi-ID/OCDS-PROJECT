@@ -11,6 +11,13 @@ class Community(models.Model):
 
     def __str__(self):
         return f'Name: {self.name} >> Description: {self.description[:20]}'
+    
+    # def join_ocds_community(self):
+    #     """Add users who are not members of ocds community."""
+    #     ocds_community = Community.objects.filter(slug='ocds-general-community').prefetch_related('users')
+    #     users = User.objects.exclude(community_set=ocds_community)
+    #     if users:
+    #         ocds_community.users.add(users)
 
 
 class Information(models.Model):

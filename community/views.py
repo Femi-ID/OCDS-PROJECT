@@ -10,6 +10,14 @@ from django.db.models import Min, Max, Count
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
+
+def join_ocds_community():
+        """Add users who are not members of ocds community."""
+        ocds_community = Community.objects.filter(slug='ocds-general-community').prefetch_related('users')
+        users = User.objects.exclude(community=ocds_community)
+        if users:
+            ocds_community.users.add(*users)
+
 class ListCommunitiesInformation(APIView):
     """Display information in the home page.""" 
 
@@ -22,11 +30,11 @@ class ListCommunitiesInformation(APIView):
         for community in communities:
              questions = Question.objects.filter(community=community).annotate(trend=Count('replies')).order_by('-trend')[:5]
              community_questions.append(questions)
-             print(community_questions)
+            #  print(community_questions)
         community_quest_serializer = QuestionSerializer(community_questions, many=True)
 
+        # join_ocds_community()
 
-        
         info_serializer = InformationSerializer(information, many=True)
         trending_question_serializer = QuestionSerializer(trending_questions, many=True)
         # community_quest_serializer = QuestionSerializer(community_questions, many=True)
@@ -66,7 +74,7 @@ class JoinCommunity(APIView):
                 }, status=status.HTTP_204_NO_CONTENT)
             
             return Response({
-                'message': "You are already a member of this community"
+                'message': "You are already a member of this community."
             }, status=status.HTTP_204_NO_CONTENT)
         return Response({
             'message': "Login or sign-up to join a community."
