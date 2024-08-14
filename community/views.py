@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from .models import Information, Community
+from .models import Information, Community, CommunityMessage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import CommunitySerializer, InformationSerializer, QuestionSerializer
+from .serializers import CommunitySerializer, InformationSerializer, QuestionSerializer, CommunityMessageSerializer
 from accounts.models import User
 from questions.models import Question
 from django.db.models import Min, Max, Count
@@ -121,4 +121,63 @@ class CreateInformation(APIView):
         return Response({'message': "Login or sign-up. Only admins are allowed to create information.",
                          "status": 401},
                          status=status.HTTP_401_UNAUTHORIZED)
+
+
+class RetrieveCreateMessages(APIView):
+    def get(self, request, communityId):
+        try:
+            if request.user not in community.users and request.user.user_type != 'admin':
+                return Response({
+                            'error': "You are authenticated but cannot make this request or not a member of the community"},
+                            status=status.HTTP_403_FORBIDDEN)
+            community = get_object_or_404(CommunityMessage, id=communityId)
+            community_messages = CommunityMessage.objects.filter(community=community).order_by('-created_at')
+            serializer = CommunityMessageSerializer(community_messages, many=True)            
+            return Response({'status': 200,
+                            'success': True,
+                            'info': f'Community {community.name} and its messages.',
+                            'community_name': community.name,
+                            'messages': serializer.data,
+                            #  'question_replies': question_replies
+                            #  'serialized_replies':serialized_replies
+                            },
+                            status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "status": 500,
+                "success": False,
+                "message": f'Internal server error: {e}'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # wake up and finish this!!!
+
+
+    """Only admin users can send messages."""
+    def post(self, request, communityId):
+        if request.user.user_type == "admin":
+            try:
+                community = get_object_or_404(Community, id=communityId)
+                
+                if request.user not in community.users:
+                    return Response({
+                        'error': "You are authenticated but cannot make this request; not a member of the community"},
+                        status=status.HTTP_403_FORBIDDEN)
+                #  create a message model and replace it with the question serializer
+                serializer = CommunityMessageSerializer(data=request.data)
+                if serializer.is_valid():
+                    # serializer.owner = request.user
+                    serializer.save(owner=self.request.user, community=community)
+                    return Response({'status': 200,
+                                    'success': True,
+                                    'message': f'Question has been created.',
+                                    'data': serializer.data},
+                                    status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+            except Exception as e:
+                return Response({
+                    "status": 500,
+                    "success": False,
+                    "message": f'Server Malfunction: {e}',
+                    'error': 'You are not authorized to create questions'
+                    }, 
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)

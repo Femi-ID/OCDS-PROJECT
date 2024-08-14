@@ -134,8 +134,6 @@ class QuestionDetails(APIView):
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-# class SendMessages(APIView):
-#     """Only admin users can send messages."""
-#     def post(self, request):
-#         if request.user.user_type == "admin":
+
+
 

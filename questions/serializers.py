@@ -84,6 +84,18 @@ class ReplySerializer(serializers.ModelSerializer):
             
         #     return QuestionSerializer(queryset, many=True).data
 
+
+# class CommunityMessageSerializer(serializers.ModelSerializer):
+#      no_of_messages = serializers.SerializerMethodField()
+     
+#      class Meta:
+#         model = CommunityMessage
+#         fields = ['id', 'owner', 'title', 'content', 'no_of_messages']
+        
+#      def get_no_of_messages(self, object):
+#          return object.content.count()
+    
+
 # class VoteSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model: Vote
