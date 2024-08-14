@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Information, Community
+from .models import Information, Community, CommunityMessage
 from questions.models import Question
 from taggit.serializers import (TagListSerializerField, TaggitSerializer)
 from django.db.models import Count, Sum
@@ -38,4 +38,15 @@ class QuestionSerializer(serializers.ModelSerializer, TaggitSerializer):
     def get_questions_replies(self, object):
         # return object.annotate(questions_replies=Count("voted_by")).order_by('questions_replies')[:10]
         return object.replies.count()
+    
+
+class CommunityMessageSerializer(serializers.ModelSerializer):
+     no_of_messages = serializers.SerializerMethodField()
+     
+     class Meta:
+        model = CommunityMessage
+        fields = ['id', 'owner', 'title', 'content', 'no_of_messages']
+        
+     def get_no_of_messages(self, object):
+         return object.content.count()
     

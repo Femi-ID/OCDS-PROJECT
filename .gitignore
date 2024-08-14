@@ -9,3 +9,4 @@ build_files.sh
 
 questions/migrations/0001_initial.py
 questions/migrations/0002_uuidtaggeditem_alter_question_tags.py 
+community/transactions.xlsx

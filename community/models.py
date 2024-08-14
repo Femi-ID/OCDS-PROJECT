@@ -30,3 +30,17 @@ class Information(models.Model):
 
     def __str__(self):
         return f'Title: {self.title}'
+    
+
+class CommunityMessage(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,  primary_key=True, editable=False, unique=True)
+    owner = models.ForeignKey(User, related_name='community_messages', on_delete=models.DO_NOTHING)
+    title = models.CharField(max_length=150, blank=False, null=False)
+    content = models.TextField(max_length=200, blank=False, null=False)
+    community = models.ForeignKey(Community, related_name='messages', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # TASK: Using signals create a function that only allows an admin to create a message 
+
+    

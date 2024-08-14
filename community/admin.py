@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Community, Information
+from .models import Community, Information, CommunityMessage
 # Register your models here.
 
 
@@ -15,3 +15,6 @@ class Information(admin.ModelAdmin):
     list_display = ['id', 'owner', 'title', 'content', 'created_at']
 
     
+@admin.register(CommunityMessage)
+class CommunityMessage(admin.ModelAdmin):
+    list_display = ['id', 'owner', 'title', 'content']
